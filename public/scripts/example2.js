@@ -1,7 +1,7 @@
-const ProductCategoryRow = props => (
-	<tr><th colSpan="2">{props.category}</th></tr>
-);
-const ProductRow = props => {	
+const ProductCategoryRow = (props) => {
+	return <tr><th colSpan="2">{props.category}</th></tr>;
+};
+const ProductRow = (props) => {	
 		let name = props.product.stocked ?
     	props.product.name :
       <span style={{color: 'red'}}>
@@ -19,7 +19,7 @@ const ProductTable = ({products, ...props}) =>{
 	let rows=[];
 	let lastCategory;
 	let self=this;
-	products.forEach(function(product){
+	products.forEach((product) =>{
 		
 		if(!(~product.name.toLowerCase().indexOf(props.filterText.toLowerCase()))
 		   ||(!product.stocked&&props.inStockOnly)) return;
@@ -43,12 +43,19 @@ const ProductTable = ({products, ...props}) =>{
 	);
 };
 class SearchBar extends React.Component{
+	constructor(props){
+		super(props);
+		this.filterText=props.filterText;
+		this.inStockOnly=props.inStockOnly;
+		this.handleChange=this.handleChange.bind(this);
+	}
+
 	handleChange(){
 		this.props.onUserInput(
 		  this.refs.filterTextInput.value,
 		  this.refs.inStockOnlyInput.checked
 		);
-	},
+	}
 	render(){
 		return(
 		  <form>
@@ -73,18 +80,20 @@ class SearchBar extends React.Component{
 	}
 };
 class FilterableProductTable extends React.Component{
-	getInitialState(){
-		return{
-			filterText: '',
-			inStockOnly: false
-		}
-	},
+	constructor(props){
+		super(props);
+		this.handleUserInput=this.handleUserInput.bind(this);		
+	}
+	state={
+		filterText :'',
+		inStockOnly: false
+	}
 	handleUserInput(filterText,inStockOnly){
 		this.setState({
 			filterText :filterText,
 			inStockOnly: inStockOnly
 		});
-	},
+	}
   render() {
     return (
         <div>
